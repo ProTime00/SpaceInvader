@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class LineMovement : MonoBehaviour
@@ -19,7 +16,7 @@ public class LineMovement : MonoBehaviour
                 position.y -= 2;
                 transform1.position = position;
             }
-            else if (transform.position.x < -15f)
+            else if (transform.position.x < -13.8f)
             {
                 direction = 1;
                 var transform1 = transform;

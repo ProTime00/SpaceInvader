@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D))] //technique for making sure there isn't a null reference during runtime if you are going to use get component
 public class Bullet : MonoBehaviour
@@ -18,6 +16,12 @@ public class Bullet : MonoBehaviour
     // Update is called once per frame
     private void Fire()
     {
-      myRigidbody2D.velocity = Vector2.up * speed; 
+      if (gameObject.name is "Bullet(Clone)")
+      {
+        myRigidbody2D.velocity = Vector2.up * speed;
+        return;
+      }
+      myRigidbody2D.velocity = Vector2.down * speed;
+       
     }
 }

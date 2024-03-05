@@ -6,6 +6,8 @@ using Random = UnityEngine.Random;
 public class Enemy : MonoBehaviour
 {
     public int scoreGiven;
+    public GameObject bullet;
+    public Transform shottingOffset;
     public int type;
 
 
@@ -30,15 +32,35 @@ public class Enemy : MonoBehaviour
             scoreGiven = 1000;
             return;
         }
+        if (type is 4)
+        {
+            GetComponent<Renderer>().material.color = Color.magenta;
+            scoreGiven = 5000;
+            return;
+        }
 
         throw new InvalidCastException($"type: {type} is wrong");
 
     }
 
+
+    private void FixedUpdate()
+    {
+        int r = Random.Range(1, 1001);
+        if (r == 42)
+        {
+            GameObject shot = Instantiate(bullet, shottingOffset.transform.position, Quaternion.identity);
+            Destroy(shot, 10f);
+        }
+    }
+
     private void OnTriggerEnter2D(Collider2D other)
     {
-        GameManager.gameManager.score += scoreGiven;
-        Destroy(gameObject);
-        Destroy(other.gameObject);
+        if (other.gameObject.name is not "EnemyBullet(Clone)")
+        {
+            GameManager.gameManager.score += scoreGiven;
+            Destroy(gameObject);
+            Destroy(other.gameObject);
+        }
     }
 }
