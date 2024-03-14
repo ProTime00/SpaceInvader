@@ -9,10 +9,16 @@ public class Enemy : MonoBehaviour
     public GameObject bullet;
     public Transform shottingOffset;
     public int type;
+    private AudioSource _audioSource;
+
+    public delegate void DIE();
+
+    public static event DIE IsDead;
 
 
     private void Awake()
     {
+        _audioSource = GetComponent<AudioSource>();
         if (type is 1)
         {
             GetComponent<Renderer>().material.color = Color.red;
@@ -49,6 +55,7 @@ public class Enemy : MonoBehaviour
         int r = Random.Range(1, 1001);
         if (r == 42)
         {
+            _audioSource.Play();
             GameObject shot = Instantiate(bullet, shottingOffset.transform.position, Quaternion.identity);
             Destroy(shot, 10f);
         }
@@ -58,6 +65,7 @@ public class Enemy : MonoBehaviour
     {
         if (other.gameObject.name is not "EnemyBullet(Clone)")
         {
+            IsDead.Invoke();
             GameManager.gameManager.score += scoreGiven;
             Destroy(gameObject);
             Destroy(other.gameObject);
